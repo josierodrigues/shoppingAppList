@@ -1,5 +1,17 @@
 import tkinter
 from tkinter import *
+import sqlite3
+
+conn = sqlite3.connect("mydatabase.db")
+cursor = conn.cursor()
+cursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, password TEXT)''')
+
+conn.commit()
+
+cursor.execute("INSERT INTO users (name, password) VALUES (?, ?)", ('john', 'password'))
+
+conn.commit()
+conn.close()
 
 total_price = 0
 total_price_label = Label
@@ -46,10 +58,10 @@ def show_main_window():
 def open_window_login():
     login_window = Tk(className=" Login")
     login_window.geometry("600x600")
-    Label(login_window, text="Name: ").pack()
+    Label(login_window, text="Login: ").pack()
     mandatory_name_entry = Entry(login_window, width=20)
     mandatory_name_entry.pack()
-    Label(login_window, text="Email: ").pack()
+    Label(login_window, text="Password: ").pack()
     mandatory_password_entry = Entry(login_window, width=20)
     mandatory_password_entry.pack()
     Button(login_window, text="Login", command=lambda: validate_and_open_main_window(login_window, mandatory_name_entry, mandatory_password_entry, input_error_label)).pack()
